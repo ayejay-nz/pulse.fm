@@ -40,6 +40,8 @@ CREATE TABLE user_spotify_data (
     spotify_display_name TEXT DEFAULT NULL,
     access_token TEXT NOT NULL, -- encrypted :)
     refresh_token TEXT NOT NULL, -- encrypted :)
+    full_history_imported BOOLEAN NOT NULL DEFAULT FALSE,
+    history_imported_at TIMESTAMP DEFAULT NULL,
     token_expires_at TIMESTAMP DEFAULT NULL,
     last_fetched_at TIMESTAMP DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
