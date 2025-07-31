@@ -205,40 +205,6 @@ CREATE TABLE track_audio_features (
     PRIMARY KEY (track_id)
 );
 
-CREATE TABLE user_playlists (
-    playlist_id BIGSERIAL,
-    playlist_name VARCHAR(200) NOT NULL,
-    playlist_description VARCHAR(512) NOT NULL,
-    public_playlist BOOLEAN,
-    user_id INTEGER NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
-    FOREIGN KEY (user_id) REFERENCES users (user_id)
-        ON DELETE CASCADE,
-    PRIMARY KEY (playlist_id)
-);
-CREATE INDEX idx_user_playlists_user_id_playlist_name ON user_playlists (user_id, playlist_name);
-CREATE INDEX idx_user_playlists_public_playlist ON user_playlists (public_playlist);
-
-CREATE TABLE playlist_tracks (
-    playlist_track_id BIGSERIAL,
-    playlist_id BIGINT NOT NULL,
-    track_id INTEGER NOT NULL,
-    position INTEGER NOT NULL,
-    added_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    UNIQUE (playlist_id, position),
-    FOREIGN KEY (playlist_id) REFERENCES user_playlists (playlist_id)
-        ON DELETE CASCADE,
-    FOREIGN KEY (track_id) REFERENCES tracks (track_id)
-        ON DELETE CASCADE,
-    PRIMARY KEY (playlist_track_id)
-);
-CREATE INDEX idx_playlist_tracks_track_id ON playlist_tracks (track_id);
-CREATE INDEX idx_playlist_tracks_playlist_id_track_id ON playlist_tracks (playlist_id, track_id);
-CREATE INDEX idx_playlist_tracks_playlist_id_position ON playlist_tracks (playlist_id, position DESC);
-CREATE INDEX idx_playlist_tracks_playlist_id_added_at ON playlist_tracks (playlist_id, added_at DESC);
-
 CREATE TABLE listening_history (
     history_id BIGSERIAL,
     user_id INTEGER NOT NULL,
@@ -304,12 +270,6 @@ EXECUTE FUNCTION set_updated_at();
 
 CREATE TRIGGER trigger_set_updated_at_friendships
 BEFORE UPDATE ON friendships
-FOR EACH ROW
-WHEN (OLD IS DISTINCT FROM NEW)
-EXECUTE FUNCTION set_updated_at();
-
-CREATE TRIGGER trigger_set_updated_at_user_playlists
-BEFORE UPDATE ON user_playlists
 FOR EACH ROW
 WHEN (OLD IS DISTINCT FROM NEW)
 EXECUTE FUNCTION set_updated_at();
