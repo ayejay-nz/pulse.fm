@@ -35,7 +35,7 @@ CREATE TABLE user_subscriptions (
 );
 
 CREATE TABLE user_spotify_data (
-    user_id INTEGER,    
+    user_id INTEGER NOT NULL,    
     spotify_user_id TEXT UNIQUE DEFAULT NULL,
     spotify_display_name TEXT DEFAULT NULL,
     access_token TEXT NOT NULL, -- encrypted :)
@@ -50,7 +50,7 @@ CREATE TABLE user_spotify_data (
 );
 
 CREATE TABLE user_profiles (
-    user_id INTEGER,
+    user_id INTEGER NOT NULL,
     bio TEXT,
     avatar_uri TEXT,
     location VARCHAR(255),
@@ -61,7 +61,7 @@ CREATE TABLE user_profiles (
 );
 
 CREATE TABLE user_privacy_settings (
-    user_id INTEGER,
+    user_id INTEGER NOT NULL,
     is_private BOOLEAN NOT NULL DEFAULT FALSE,
     currently_playing BOOLEAN NOT NULL DEFAULT TRUE,
     recently_played BOOLEAN NOT NULL DEFAULT TRUE,
@@ -85,7 +85,8 @@ CREATE TABLE artists (
     spotify_uri TEXT NOT NULL UNIQUE,
     external_url TEXT NOT NULL,
     image_uri TEXT,
-    followers INTEGER NOT NULL DEFAULT 0,
+    followers INTEGER NOT NULL DEFAULT 0
+        CHECK (followers >= 0),
     popularity INTEGER NOT NULL
         CHECK (popularity BETWEEN 0 AND 100),
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -119,7 +120,8 @@ CREATE TABLE albums (
     external_url TEXT NOT NULL,
     image_uri TEXT,
     album_type album_type_enum NOT NULL,
-    total_tracks INTEGER NOT NULL,
+    total_tracks INTEGER NOT NULL
+        CHECK (total_tracks > 0),
     release_date DATE NOT NULL,
     release_date_precision release_date_precision_enum NOT NULL,
     popularity INTEGER NOT NULL,
@@ -151,7 +153,8 @@ CREATE TABLE tracks (
     image_uri TEXT,
     disc_number INTEGER NOT NULL,
     track_number INTEGER NOT NULL,
-    duration_ms INTEGER NOT NULL,
+    duration_ms INTEGER NOT NULL
+        CHECK (duration_ms >= 0),
     popularity INTEGER NOT NULL,
         CHECK (popularity BETWEEN 0 AND 100),
     explicit BOOLEAN NOT NULL,
