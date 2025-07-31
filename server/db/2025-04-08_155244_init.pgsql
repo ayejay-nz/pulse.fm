@@ -28,7 +28,7 @@ CREATE TABLE user_subscriptions (
             (membership_status = 'lifetime' AND subscription_ends IS NULL)
             OR
             (membership_status = 'subscription' AND subscription_ends IS NOT NULL)
-        )
+        ),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE SET NULL,
     PRIMARY KEY (subscription_id)
@@ -38,8 +38,8 @@ CREATE TABLE user_spotify_data (
     user_id INTEGER,    
     spotify_user_id TEXT UNIQUE DEFAULT NULL,
     spotify_display_name TEXT DEFAULT NULL,
-    access_token TEXT DEFAULT NOT NULL, -- encrypted :)
-    refresh_token TEXT DEFAULT NOT NULL, -- encrypted :)
+    access_token TEXT NOT NULL, -- encrypted :)
+    refresh_token TEXT NOT NULL, -- encrypted :)
     token_expires_at TIMESTAMP DEFAULT NULL,
     last_fetched_at TIMESTAMP DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
@@ -115,6 +115,7 @@ CREATE TABLE albums (
     spotify_id TEXT NOT NULL UNIQUE,
     spotify_uri TEXT NOT NULL UNIQUE,
     external_url TEXT NOT NULL,
+    image_uri TEXT,
     album_type album_type_enum NOT NULL,
     total_tracks INTEGER NOT NULL,
     release_date DATE NOT NULL,
@@ -145,6 +146,7 @@ CREATE TABLE tracks (
     spotify_id TEXT NOT NULL UNIQUE,    
     spotify_uri TEXT NOT NULL UNIQUE,
     external_url TEXT NOT NULL,
+    image_uri TEXT,
     disc_number INTEGER NOT NULL,
     track_number INTEGER NOT NULL,
     duration_ms INTEGER NOT NULL,
@@ -152,6 +154,7 @@ CREATE TABLE tracks (
         CHECK (popularity BETWEEN 0 AND 100),
     explicit BOOLEAN NOT NULL,
     album_id INTEGER NOT NULL,
+    is_local BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY (album_id) REFERENCES albums (album_id)
         ON DELETE RESTRICT,
@@ -235,7 +238,6 @@ CREATE INDEX idx_playlist_tracks_track_id ON playlist_tracks (track_id);
 CREATE INDEX idx_playlist_tracks_playlist_id_track_id ON playlist_tracks (playlist_id, track_id);
 CREATE INDEX idx_playlist_tracks_playlist_id_position ON playlist_tracks (playlist_id, position DESC);
 CREATE INDEX idx_playlist_tracks_playlist_id_added_at ON playlist_tracks (playlist_id, added_at DESC);
-
 
 CREATE TABLE listening_history (
     history_id BIGSERIAL,
