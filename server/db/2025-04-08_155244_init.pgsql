@@ -252,7 +252,8 @@ CREATE TABLE listening_history (
     PRIMARY KEY (history_id)
 );
 CREATE INDEX idx_listening_history_user_played_at ON listening_history (user_id, played_at DESC);
-CREATE INDEX idx_listening_history_user_id_track_id ON listening_history (user_id, track_id);
+CREATE INDEX idx_listening_history_user_id_track_id_played_at ON listening_history (user_id, track_id, played_at DESC);
+CREATE INDEX idx_listening_history_track_id_played_at ON listening_history (track_id, played_at DESC);
 
 CREATE TABLE friendships (
     friendship_id SERIAL,
