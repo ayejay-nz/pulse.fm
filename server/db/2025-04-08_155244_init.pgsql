@@ -14,7 +14,6 @@ CREATE TABLE users (
     is_verified BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL,
-    deleted_at TIMESTAMPTZ DEFAULT NULL, -- hard delete user after 4 weeks
     PRIMARY KEY (user_id)
 );
 
