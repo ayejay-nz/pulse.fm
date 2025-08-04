@@ -54,6 +54,8 @@ CREATE TABLE user_profiles (
     bio TEXT,
     avatar_uri TEXT,
     location VARCHAR(255),
+    timezone TEXT DEFAULT 'UTC',
+    timezone_updated_at TIMESTAMPTZ DEFAULT NULL,
     updated_at TIMESTAMPTZ NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
