@@ -12,9 +12,9 @@ CREATE TABLE users (
     password_hash TEXT NOT NULL,
     password_salt TEXT NOT NULL,
     is_verified BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP NOT NULL,
-    deleted_at TIMESTAMP DEFAULT NULL, -- hard delete user after 4 weeks
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL,
+    deleted_at TIMESTAMPTZ DEFAULT NULL, -- hard delete user after 4 weeks
     PRIMARY KEY (user_id)
 );
 
@@ -22,8 +22,8 @@ CREATE TABLE user_subscriptions (
     subscription_id SERIAL,
     user_id INTEGER,
     membership_status membership_status_enum NOT NULL,
-    subscribed_at TIMESTAMP NOT NULL,
-    subscription_ends TIMESTAMP,
+    subscribed_at TIMESTAMPTZ NOT NULL,
+    subscription_ends TIMESTAMPTZ,
         CHECK (
             (membership_status = 'lifetime' AND subscription_ends IS NULL)
             OR
@@ -41,9 +41,9 @@ CREATE TABLE user_spotify_data (
     access_token TEXT NOT NULL, -- encrypted :)
     refresh_token TEXT NOT NULL, -- encrypted :)
     full_history_imported BOOLEAN NOT NULL DEFAULT FALSE,
-    history_imported_at TIMESTAMP DEFAULT NULL,
-    token_expires_at TIMESTAMP DEFAULT NULL,
-    last_fetched_at TIMESTAMP DEFAULT NULL,
+    history_imported_at TIMESTAMPTZ DEFAULT NULL,
+    token_expires_at TIMESTAMPTZ DEFAULT NULL,
+    last_fetched_at TIMESTAMPTZ DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
     PRIMARY KEY (user_id)
@@ -54,7 +54,7 @@ CREATE TABLE user_profiles (
     bio TEXT,
     avatar_uri TEXT,
     location VARCHAR(255),
-    updated_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
     PRIMARY KEY (user_id)
@@ -72,7 +72,7 @@ CREATE TABLE user_privacy_settings (
     streams BOOLEAN NOT NULL DEFAULT TRUE,
     stream_stats BOOLEAN NOT NULL DEFAULT TRUE,
     friends BOOLEAN NOT NULL DEFAULT TRUE,
-    updated_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
     PRIMARY KEY (user_id)
@@ -89,7 +89,7 @@ CREATE TABLE artists (
         CHECK (followers >= 0),
     popularity INTEGER NOT NULL
         CHECK (popularity BETWEEN 0 AND 100),
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (artist_id)
 );
 CREATE INDEX idx_artists_spotify_id ON artists (spotify_id);
@@ -97,7 +97,7 @@ CREATE INDEX idx_artists_spotify_id ON artists (spotify_id);
 CREATE TABLE genres (
     genre_id SERIAL,
     genre_name TEXT NOT NULL UNIQUE,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (genre_id)
 );
 
@@ -127,7 +127,7 @@ CREATE TABLE albums (
     popularity INTEGER NOT NULL,
         CHECK (popularity BETWEEN 0 AND 100),
     explicit BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (album_id)
 );
 CREATE INDEX idx_albums_spotify_id ON albums (spotify_id);
@@ -160,7 +160,7 @@ CREATE TABLE tracks (
     explicit BOOLEAN NOT NULL,
     album_id INTEGER NOT NULL,
     is_local BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     FOREIGN KEY (album_id) REFERENCES albums (album_id)
         ON DELETE RESTRICT,
     PRIMARY KEY (track_id)
@@ -204,7 +204,7 @@ CREATE TABLE track_audio_features (
         CHECK (time_signature BETWEEN 3 AND 7),
     valence NUMERIC NOT NULL
         CHECK (valence BETWEEN 0 AND 1),
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     FOREIGN KEY (track_id) REFERENCES tracks (track_id)
         ON DELETE CASCADE,
     PRIMARY KEY (track_id)
@@ -231,8 +231,8 @@ CREATE TABLE friendships (
     user_id1 INTEGER NOT NULL,
     user_id2 INTEGER NOT NULL,
     status friendship_status_enum NOT NULL DEFAULT 'pending',
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL,
     CHECK (user_id1 <> user_id2),
     FOREIGN KEY (user_id1) REFERENCES users (user_id)
         ON DELETE CASCADE,
