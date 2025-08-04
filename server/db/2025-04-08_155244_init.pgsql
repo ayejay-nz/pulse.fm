@@ -149,12 +149,14 @@ CREATE INDEX idx_album_artists_artist_id ON album_artists (artist_id);
 CREATE TABLE tracks (
     track_id SERIAL,
     track_name TEXT NOT NULL,
-    spotify_id TEXT NOT NULL UNIQUE,    
-    spotify_uri TEXT NOT NULL UNIQUE,
-    external_url TEXT NOT NULL,
+    spotify_id TEXT UNIQUE,    
+    spotify_uri TEXT UNIQUE,
+    external_url TEXT,
     image_uri TEXT,
-    disc_number INTEGER NOT NULL,
-    track_number INTEGER NOT NULL,
+    disc_number INTEGER NOT NULL
+        CHECK (disc_number > 0),
+    track_number INTEGER NOT NULL
+        CHECK (track_number > 0),
     duration_ms INTEGER NOT NULL
         CHECK (duration_ms >= 0),
     popularity INTEGER NOT NULL,
@@ -216,7 +218,8 @@ CREATE TABLE listening_history (
     history_id BIGSERIAL,
     user_id INTEGER NOT NULL,
     track_id INTEGER NOT NULL,
-    ms_played INTEGER NOT NULL,
+    ms_played INTEGER NOT NULL
+        CHECK (ms_played >= 0),
     played_at TIMESTAMPTZ NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
