@@ -16,6 +16,7 @@ CREATE TABLE users (
     updated_at TIMESTAMPTZ NOT NULL,
     PRIMARY KEY (user_id)
 );
+CREATE INDEX idx_users_is_verified ON users (is_verified);
 
 CREATE TABLE user_subscriptions (
     subscription_id SERIAL,
@@ -132,6 +133,7 @@ CREATE TABLE albums (
     PRIMARY KEY (album_id)
 );
 CREATE INDEX idx_albums_spotify_id ON albums (spotify_id);
+CREATE INDEX idx_albums_album_type ON albums (album_type);
 
 CREATE TABLE album_artists (
     album_id INTEGER NOT NULL,
@@ -169,6 +171,7 @@ CREATE TABLE tracks (
     PRIMARY KEY (track_id)
 );
 CREATE INDEX idx_tracks_album_id ON tracks (album_id);
+CREATE INDEX idx_tracks_is_local ON tracks (is_local);
 
 CREATE TABLE track_artists (
     track_id INTEGER NOT NULL,
