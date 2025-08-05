@@ -1,7 +1,9 @@
 CREATE TYPE album_type_enum AS ENUM ('album', 'single', 'compilation');
 CREATE TYPE artist_role_enum AS ENUM ('main', 'featured');
 CREATE TYPE friendship_status_enum AS ENUM ('accepted', 'pending', 'declined', 'blocked');
-CREATE TYPE membership_status_enum AS ENUM ('subscription', 'lifetime');
+CREATE TYPE subscription_type_enum AS ENUM ('monthly', 'quarterly', 'semiannual', 'annual', 'lifetime');
+CREATE TYPE subscription_status_enum AS ENUM ('active', 'expired', 'cancelled');
+CREATE TYPE cancellation_reason_enum AS ENUM ('user_cancelled', 'payment_failed', 'expired_naturally', 'admin_cancelled', 'fraud_suspected', 'account_deleted', 'other');
 CREATE TYPE release_date_precision_enum AS ENUM ('year', 'month', 'day');
 
 CREATE TABLE users (
@@ -21,14 +23,19 @@ CREATE INDEX idx_users_is_verified ON users (is_verified);
 CREATE TABLE user_subscriptions (
     subscription_id SERIAL,
     user_id INTEGER,
-    membership_status membership_status_enum NOT NULL,
+    subscription_type subscription_type_enum NOT NULL,
+        CHECK (
+            (subscription_type = 'lifetime' AND subscription_ends IS NULL)
+            OR
+            (subscription_type IN ('monthly', 'quarterly', 'semiannual', 'annual') AND subscription_ends IS NOT NULL)
+        ),
+    subscription_status subscription_status_enum NOT NULL DEFAULT 'active',
+    auto_renewal BOOLEAN NOT NULL DEFAULT TRUE,
+    cancellation_reason cancellation_reason_enum DEFAULT NULL,
+    next_billing_date TIMESTAMPTZ,
     subscribed_at TIMESTAMPTZ NOT NULL,
     subscription_ends TIMESTAMPTZ,
-        CHECK (
-            (membership_status = 'lifetime' AND subscription_ends IS NULL)
-            OR
-            (membership_status = 'subscription' AND subscription_ends IS NOT NULL)
-        ),
+    cancelled_at TIMESTAMPTZ DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE SET NULL,
     PRIMARY KEY (subscription_id)
