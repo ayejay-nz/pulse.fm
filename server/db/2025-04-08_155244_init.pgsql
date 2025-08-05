@@ -196,28 +196,28 @@ CREATE INDEX idx_track_artists_artist_id ON track_artists (artist_id);
 
 CREATE TABLE track_audio_features (
     track_id INTEGER NOT NULL,
-    acousticness NUMERIC NOT NULL
+    acousticness NUMERIC(7, 6) NOT NULL
         CHECK (acousticness BETWEEN 0 AND 1),
-    danceability NUMERIC NOT NULL
+    danceability NUMERIC(7, 6) NOT NULL
         CHECK (danceability BETWEEN 0 AND 1),
-    energy NUMERIC NOT NULL
+    energy NUMERIC(7, 6) NOT NULL
         CHECK (energy BETWEEN 0 AND 1),
-    instrumentalness NUMERIC NOT NULL
+    instrumentalness NUMERIC(7, 6) NOT NULL
         CHECK (instrumentalness BETWEEN 0 AND 1),
     key INTEGER NOT NULL
         CHECK (key BETWEEN -1 AND 11),
-    liveness NUMERIC NOT NULL
+    liveness NUMERIC(7, 6) NOT NULL
         CHECK (liveness BETWEEN 0 AND 1),
-    loudness NUMERIC NOT NULL,
+    loudness NUMERIC(11, 6) NOT NULL,
     mode INTEGER NOT NULL
         CHECK (mode IN (0, 1)),
-    speechiness NUMERIC NOT NULL
+    speechiness NUMERIC(7, 6) NOT NULL
         CHECK (speechiness BETWEEN 0 AND 1),
-    tempo NUMERIC NOT NULL
+    tempo NUMERIC(11, 6) NOT NULL
         CHECK (tempo > 0),
     time_signature INTEGER NOT NULL
         CHECK (time_signature BETWEEN 3 AND 7),
-    valence NUMERIC NOT NULL
+    valence NUMERIC(7, 6) NOT NULL
         CHECK (valence BETWEEN 0 AND 1),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     FOREIGN KEY (track_id) REFERENCES tracks (track_id)
