@@ -263,7 +263,7 @@ CREATE INDEX idx_friendships_status ON friendships (status);
 
 -- Triggers --
 
-CREATE OR REPLACE FUNCTION TRIGGER set_updated_at()
+CREATE OR REPLACE FUNCTION set_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
     NEW.updated_at = NOW();
