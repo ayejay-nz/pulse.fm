@@ -33,6 +33,8 @@ CREATE TABLE user_subscriptions (
         ON DELETE SET NULL,
     PRIMARY KEY (subscription_id)
 );
+CREATE INDEX idx_user_subscriptions_user_id ON user_subscriptions (user_id);
+CREATE INDEX idx_user_subscriptions_subscription_ends ON user_subscriptions (subscription_ends);
 
 CREATE TABLE user_spotify_data (
     user_id INTEGER NOT NULL,    
