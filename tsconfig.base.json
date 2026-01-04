@@ -15,14 +15,6 @@
         "noImplicitOverride": true,
 
         /* For transpiling with TypeScript: */
-        "module": "NodeNext",
-        "outDir": "./dist",
-        "rootDir": ".",
-        "sourceMap": true,
-
-        /* If your code doesn't run in the DOM: */
-        "lib": ["es2022"]
-    },
-    "include": ["src/**/*", "tests/**/*"],
-    "exclude": ["node_modules", "dist"]
+        "sourceMap": true
+    }
 }
