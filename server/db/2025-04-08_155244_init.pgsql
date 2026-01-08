@@ -47,12 +47,13 @@ CREATE TABLE user_spotify_data (
     user_id INTEGER NOT NULL,    
     spotify_user_id TEXT UNIQUE DEFAULT NULL,
     spotify_display_name TEXT DEFAULT NULL,
-    access_token TEXT NOT NULL, -- encrypted :)
-    refresh_token TEXT NOT NULL, -- encrypted :)
+    access_token TEXT, -- encrypted :)
+    refresh_token TEXT, -- encrypted :)
     full_history_imported BOOLEAN NOT NULL DEFAULT FALSE,
     history_imported_at TIMESTAMPTZ DEFAULT NULL,
     token_expires_at TIMESTAMPTZ DEFAULT NULL,
     last_fetched_at TIMESTAMPTZ DEFAULT NULL,
+    revoked_at TIMESTAMPTZ DEFAULT NULL, -- for when a user removes their oauth connection
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
     PRIMARY KEY (user_id)
