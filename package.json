@@ -1,0 +1,18 @@
+{
+    "name": "pulse.fm",
+    "private": true,
+    "version": "0.0.0",
+    "workspaces": [
+        "server",
+        "client"
+    ],
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ayejay-nz/pulse.fm.git"
+    },
+    "devDependencies": {
+        "prettier": "^3.7.4",
+        "typescript": "^5.9.3"
+    }
+}
