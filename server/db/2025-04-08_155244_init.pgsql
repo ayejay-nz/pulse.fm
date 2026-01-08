@@ -231,6 +231,8 @@ CREATE TABLE listening_history (
     ms_played INTEGER NOT NULL
         CHECK (ms_played >= 0),
     played_at TIMESTAMPTZ NOT NULL,
+    CONSTRAINT listening_history_unique_play
+        UNIQUE (user_id, track_id, played_at, ms_played),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
     FOREIGN KEY (track_id) REFERENCES tracks (track_id)
