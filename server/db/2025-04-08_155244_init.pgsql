@@ -65,6 +65,7 @@ CREATE TABLE user_profiles (
     avatar_uri TEXT,
     location VARCHAR(255),
     timezone TEXT DEFAULT 'UTC',
+    user_preferences JSONB NOT NULL DEFAULT '{}',
     timezone_updated_at TIMESTAMPTZ DEFAULT NULL,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
