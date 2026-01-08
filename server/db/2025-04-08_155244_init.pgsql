@@ -15,7 +15,7 @@ CREATE TABLE users (
     password_salt TEXT NOT NULL,
     is_verified BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (user_id)
 );
 CREATE INDEX idx_users_is_verified ON users (is_verified);
@@ -65,7 +65,7 @@ CREATE TABLE user_profiles (
     location VARCHAR(255),
     timezone TEXT DEFAULT 'UTC',
     timezone_updated_at TIMESTAMPTZ DEFAULT NULL,
-    updated_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
     PRIMARY KEY (user_id)
@@ -83,7 +83,7 @@ CREATE TABLE user_privacy_settings (
     streams BOOLEAN NOT NULL DEFAULT TRUE,
     stream_stats BOOLEAN NOT NULL DEFAULT TRUE,
     friends BOOLEAN NOT NULL DEFAULT TRUE,
-    updated_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
         ON DELETE CASCADE,
     PRIMARY KEY (user_id)
@@ -248,7 +248,7 @@ CREATE TABLE friendships (
     user_id2 INTEGER NOT NULL,
     status friendship_status_enum NOT NULL DEFAULT 'pending',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     CHECK (user_id1 <> user_id2),
     FOREIGN KEY (user_id1) REFERENCES users (user_id)
         ON DELETE CASCADE,
