@@ -104,7 +104,6 @@ CREATE TABLE artists (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (artist_id)
 );
-CREATE INDEX idx_artists_spotify_id ON artists (spotify_id);
 
 CREATE TABLE genres (
     genre_id SERIAL,
@@ -142,7 +141,6 @@ CREATE TABLE albums (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (album_id)
 );
-CREATE INDEX idx_albums_spotify_id ON albums (spotify_id);
 CREATE INDEX idx_albums_album_type ON albums (album_type);
 
 CREATE TABLE album_artists (
