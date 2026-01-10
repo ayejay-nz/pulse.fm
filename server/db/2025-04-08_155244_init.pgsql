@@ -38,6 +38,7 @@ CREATE TABLE user_subscriptions (
     subscription_status subscription_status_enum NOT NULL DEFAULT 'active',
     auto_renewal BOOLEAN NOT NULL DEFAULT TRUE,
     cancellation_reason cancellation_reason_enum DEFAULT NULL,
+    user_id_snapshot INTEGER,
     next_billing_date TIMESTAMPTZ,
     subscribed_at TIMESTAMPTZ NOT NULL,
     subscription_ends TIMESTAMPTZ,
