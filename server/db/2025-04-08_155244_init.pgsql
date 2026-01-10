@@ -41,6 +41,9 @@ CREATE TABLE user_subscriptions (
     auto_renewal BOOLEAN NOT NULL DEFAULT TRUE,
     cancellation_reason cancellation_reason_enum DEFAULT NULL,
     user_id_snapshot INTEGER NOT NULL,
+        CHECK (
+            user_id IS NULL OR user_id_snapshot = user_id
+        ),
     next_billing_date TIMESTAMPTZ,
     subscribed_at TIMESTAMPTZ NOT NULL,
     subscription_ends TIMESTAMPTZ,
