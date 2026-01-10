@@ -38,7 +38,7 @@ CREATE TABLE user_subscriptions (
     subscription_status subscription_status_enum NOT NULL DEFAULT 'active',
     auto_renewal BOOLEAN NOT NULL DEFAULT TRUE,
     cancellation_reason cancellation_reason_enum DEFAULT NULL,
-    user_id_snapshot INTEGER,
+    user_id_snapshot INTEGER NOT NULL,
     next_billing_date TIMESTAMPTZ,
     subscribed_at TIMESTAMPTZ NOT NULL,
     subscription_ends TIMESTAMPTZ,
@@ -303,3 +303,18 @@ BEFORE UPDATE ON friendships
 FOR EACH ROW
 WHEN (OLD IS DISTINCT FROM NEW)
 EXECUTE FUNCTION set_updated_at();
+
+CREATE OR REPLACE FUNCTION set_user_subscriptions_user_id_snapshot()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.user_id IS NOT NULL THEN
+        NEW.user_id_snapshot := NEW.user_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_set_subscriptions_user_id_snapshot
+BEFORE INSERT OR UPDATE OF user_id ON user_subscriptions
+FOR EACH ROW
+EXECUTE FUNCTION set_user_subscriptions_user_id_snapshot();
