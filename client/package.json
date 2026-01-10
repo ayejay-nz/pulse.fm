@@ -1,0 +1,11 @@
+{
+    "name": "@pulse.fm/client",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "test": "vitest run",
+        "build": "vite build",
+        "dev": "vite dev"
+    }
+}
