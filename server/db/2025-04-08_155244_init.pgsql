@@ -8,9 +8,15 @@ CREATE TYPE release_date_precision_enum AS ENUM ('year', 'month', 'day');
 
 CREATE TABLE users (
     user_id SERIAL,
-    username VARCHAR(255) NOT NULL UNIQUE,
+    username CITEXT NOT NULL UNIQUE,
+        CHECK (
+            CHAR_LENGTH(username) BETWEEN 1 AND 30 
+        ),
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
+    email CITEXT NOT NULL UNIQUE,
+        CHECK (
+            CHAR_LENGTH(email) BETWEEN 3 AND 254
+        ),
     password_hash TEXT NOT NULL,
     password_salt TEXT NOT NULL,
     is_verified BOOLEAN NOT NULL DEFAULT FALSE,
