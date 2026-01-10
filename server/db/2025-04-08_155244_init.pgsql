@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS citext;
+
 CREATE TYPE album_type_enum AS ENUM ('album', 'single', 'compilation');
 CREATE TYPE artist_role_enum AS ENUM ('main', 'featured');
 CREATE TYPE friendship_status_enum AS ENUM ('accepted', 'pending', 'declined', 'blocked');
