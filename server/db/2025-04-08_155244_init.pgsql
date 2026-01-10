@@ -187,6 +187,8 @@ CREATE TABLE tracks (
     album_id INTEGER NOT NULL,
     is_local BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT tracks_unique_album_disc_track
+        UNIQUE (album_id, disc_number, track_number),
     FOREIGN KEY (album_id) REFERENCES albums (album_id)
         ON DELETE RESTRICT,
     PRIMARY KEY (track_id)
