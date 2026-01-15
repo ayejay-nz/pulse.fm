@@ -1,5 +1,5 @@
-import { db } from '../index.js';
-import { ListeningHistory } from '../types.js';
+import { db } from '../index';
+import { ListeningHistory } from '../types';
 import { Insertable } from 'kysely';
 
 export async function addListeningHistory(history: Insertable<ListeningHistory>[]) {

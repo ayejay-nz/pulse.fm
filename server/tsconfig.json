@@ -2,7 +2,8 @@
     "extends": "../tsconfig.base.json",
     "compilerOptions": {
         /* For transpiling with TypeScript: */
-        "module": "NodeNext",
+        "module": "preserve",
+        "moduleResolution": "bundler",
         "outDir": "../dist/server",
         "rootDir": ".",
 
