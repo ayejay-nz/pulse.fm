@@ -14,6 +14,14 @@ function isJsonEntry(entry: Entry) {
     return entry.type === 'File' && entry.path.toLowerCase().endsWith('.json');
 }
 
+function isAudioStreamingHistory(entry: Entry) {
+    const filename = entry.path.split('/').pop()?.toLowerCase() ?? '';
+    return (
+        filename.startsWith('streaming_history_audio_') &&
+        filename.endsWith('.json')
+    );
+}
+
 function isRawRecord(value: unknown): value is RawStreamingHistoryRecord {
     if (typeof value !== 'object' || value === null) {
         return false;
@@ -73,6 +81,7 @@ function parseStreamingHistoryJson(buffer: Buffer): StreamingHistoryRecord[] {
 
 export async function parseStreamingHistoryZip(zipStream: Readable) {
     const summary: UploadSummary = {
+        totalEntries: 0,
         entriesSeen: 0,
         jsonFilesProcessed: 0,
         totalUnzippedBytes: 0,
@@ -81,6 +90,13 @@ export async function parseStreamingHistoryZip(zipStream: Readable) {
 
     const parser = zipStream.pipe(unzipper.Parse({ forceStream: true }));
     for await (const entry of parser) {
+        summary.totalEntries += 1;
+
+        if (summary.totalEntries > UPLOAD_LIMITS.maxTotalEntries) {
+            entry.autodrain();
+            throw new UploadError(413, 'Too many entries in zip');
+        }
+
         if (process.env.LOG_STREAMING_HISTORY_ENTRIES === 'true') {
             console.log(`[streaming-history] entry: ${entry.path}`);
         }
@@ -98,6 +114,11 @@ export async function parseStreamingHistoryZip(zipStream: Readable) {
         }
 
         if (!isJsonEntry(entry)) {
+            entry.autodrain();
+            continue;
+        }
+
+        if (!isAudioStreamingHistory(entry)) {
             entry.autodrain();
             continue;
         }

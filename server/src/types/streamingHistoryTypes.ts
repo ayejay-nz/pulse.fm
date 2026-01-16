@@ -1,4 +1,5 @@
 export type UploadSummary = {
+    totalEntries: number;
     entriesSeen: number;
     jsonFilesProcessed: number;
     totalUnzippedBytes: number;
