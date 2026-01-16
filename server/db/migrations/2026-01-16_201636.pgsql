@@ -1,0 +1,15 @@
+BEGIN;
+
+ALTER TABLE listening_history
+RENAME COLUMN played_at TO ended_at;
+
+ALTER INDEX idx_listening_history_user_played_at
+RENAME TO idx_listening_history_user_ended_at;
+
+ALTER INDEX idx_listening_history_user_id_track_id_played_at
+RENAME TO idx_listening_history_user_id_track_id_ended_at;
+
+ALTER INDEX idx_listening_history_track_id_played_at
+RENAME TO idx_listening_history_track_id_ended_at;
+
+COMMIT;

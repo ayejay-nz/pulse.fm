@@ -104,9 +104,9 @@ export interface Genres {
 }
 
 export interface ListeningHistory {
+    endedAt: Timestamp;
     historyId: Generated<Int8>;
     msPlayed: number;
-    playedAt: Timestamp;
     trackId: number;
     userId: number;
 }
