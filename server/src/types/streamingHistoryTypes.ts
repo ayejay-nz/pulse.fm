@@ -9,7 +9,7 @@ export type UploadSummary = {
 export type StreamingHistoryRecord = {
     endTime: string;
     msPlayed: number;
-    trackUri: string; // The rest of the track data can be gathered via the Spotify API
+    spotifyTrackUri: string; // The rest of the track data can be gathered via the Spotify API
 };
 
 export class UploadError extends Error {

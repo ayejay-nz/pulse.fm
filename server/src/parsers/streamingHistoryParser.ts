@@ -40,7 +40,7 @@ function mapRawToRecord(raw: RawStreamingHistoryRecord): StreamingHistoryRecord 
     return {
         endTime: raw.ts,
         msPlayed: raw.ms_played,
-        trackUri: raw.spotify_track_uri,
+        spotifyTrackUri: raw.spotify_track_uri,
     };
 }
 
