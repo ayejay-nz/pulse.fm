@@ -1,5 +1,6 @@
 import fastify from 'fastify';
 import multipart from '@fastify/multipart';
+import 'dotenv/config';
 import { UPLOAD_LIMITS } from './constants/uploadLimits';
 import { streamingHistoryRoutes } from './routes/streamingHistoryRoutes';
 

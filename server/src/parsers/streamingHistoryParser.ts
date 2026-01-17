@@ -4,6 +4,10 @@ import { UPLOAD_LIMITS } from '../constants/uploadLimits';
 import { StreamingHistoryRecord, UploadSummary, UploadError } from '../types/streamingHistoryTypes';
 import { Readable } from 'node:stream';
 
+type ParseZipOptions = {
+    onRecords?: (records: StreamingHistoryRecord[]) => Promise<void> | void;
+};
+
 type RawStreamingHistoryRecord = {
     ts: string;
     ms_played: number;
@@ -16,10 +20,7 @@ function isJsonEntry(entry: Entry) {
 
 function isAudioStreamingHistory(entry: Entry) {
     const filename = entry.path.split('/').pop()?.toLowerCase() ?? '';
-    return (
-        filename.startsWith('streaming_history_audio_') &&
-        filename.endsWith('.json')
-    );
+    return filename.startsWith('streaming_history_audio_') && filename.endsWith('.json');
 }
 
 function isRawRecord(value: unknown): value is RawStreamingHistoryRecord {
@@ -79,7 +80,7 @@ function parseStreamingHistoryJson(buffer: Buffer): StreamingHistoryRecord[] {
     return parsed.filter(isRawRecord).map(mapRawToRecord);
 }
 
-export async function parseStreamingHistoryZip(zipStream: Readable) {
+export async function parseStreamingHistoryZip(zipStream: Readable, options: ParseZipOptions = {}) {
     const summary: UploadSummary = {
         totalEntries: 0,
         entriesSeen: 0,
@@ -133,6 +134,11 @@ export async function parseStreamingHistoryZip(zipStream: Readable) {
         }
 
         const records = parseStreamingHistoryJson(buffer);
+
+        // Stream parsed records into the DB as each JSON file is processed
+        if (records.length && options.onRecords) {
+            await options.onRecords(records);
+        }
 
         summary.recordsParsed += records.length;
     }
