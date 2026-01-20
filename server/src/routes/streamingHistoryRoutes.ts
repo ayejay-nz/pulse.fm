@@ -19,7 +19,7 @@ export async function streamingHistoryRoutes(fastify: FastifyInstance) {
                 return reply.code(err.statusCode).send({ error: err.message });
             }
 
-            request.log.error({ error: err }, 'Streaming history upload failed');
+            request.log.error({ err }, 'Streaming history upload failed');
             return reply.code(400).send({ error: 'Invalid zip file' });
         }
     });
