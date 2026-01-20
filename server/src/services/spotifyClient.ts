@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { SpotifyAlbum, SpotifyArtist, SpotifyTrack } from '../types/spotifyApiTypes';
 
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 const API_BASE = 'https://api.spotify.com/v1';
@@ -75,4 +76,52 @@ async function spotifyRequest<T>(path: string): Promise<T> {
     }
 
     return (await response.json()) as T;
+}
+
+function chunk<T>(items: T[], size: number) {
+    const result: T[][] = [];
+    for (let index = 0; index < items.length; index += size) {
+        result.push(items.slice(index, index + size));
+    }
+
+    return result;
+}
+
+export async function getTracks(ids: string[]) {
+    const results: SpotifyTrack[] = [];
+    for (const group of chunk(ids, 50)) {
+        const data = await spotifyRequest<{ tracks: SpotifyTrack[] }>(
+            `/tracks?ids=${group.join(',')}`,
+        );
+
+        results.push(...data.tracks.filter(Boolean));
+    }
+
+    return results;
+}
+
+export async function getAlbums(ids: string[]) {
+    const results: SpotifyAlbum[] = [];
+    for (const group of chunk(ids, 20)) {
+        const data = await spotifyRequest<{ albums: SpotifyAlbum[] }>(
+            `/albums?ids=${group.join(',')}`,
+        );
+
+        results.push(...data.albums.filter(Boolean));
+    }
+
+    return results;
+}
+
+export async function getArtists(ids: string[]) {
+    const results: SpotifyArtist[] = [];
+    for (const group of chunk(ids, 50)) {
+        const data = await spotifyRequest<{ artists: SpotifyArtist[] }>(
+            `/artists?ids=${group.join(',')}`,
+        );
+
+        results.push(...data.artists.filter(Boolean));
+    }
+
+    return results;
 }
