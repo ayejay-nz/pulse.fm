@@ -5,11 +5,7 @@ import { getTrackIdsFromSpotifyIds, insertTracks } from '../db/queries/tracks';
 import { SpotifyAlbum, SpotifyArtist, SpotifyTrack } from '../types/spotifyApiTypes';
 import { getAlbums, getArtists, getTracks } from './spotifyClient';
 import { Albums, Artists, Tracks, ReleaseDatePrecisionEnum } from '../db/types';
-
-type TrackIngestResult = {
-    trackIdsBySpotifyId: Map<string, number>;
-    missingTrackIds: string[];
-};
+import { TrackIngestResult } from '../types/trackIngestionTypes';
 
 function extractSpotifyTrackId(uri: string) {
     return uri.split(':')[2] ?? null;
