@@ -25,7 +25,6 @@ function mapAlbums(albums: SpotifyAlbum[]): Insertable<Albums>[] {
     return albums.map((album) => ({
         albumName: album.name,
         albumType: album.albumType,
-        explicit: album.restrictions.reason === 'explicit',
         externalUrl: album.externalUrls.spotify,
         imageUri: album.images[0]?.url ?? null,
         popularity: album.popularity,

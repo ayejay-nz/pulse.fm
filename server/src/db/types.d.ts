@@ -60,7 +60,6 @@ export interface Albums {
     albumName: string;
     albumType: AlbumTypeEnum;
     createdAt: Generated<Timestamp>;
-    explicit: Generated<boolean>;
     externalUrl: string;
     imageUri: string | null;
     popularity: number;
