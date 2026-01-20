@@ -1,6 +1,7 @@
 import 'dotenv/config';
 
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
+const API_BASE = 'https://api.spotify.com/v1';
 
 let cachedToken: { token: string; expiresAt: number } | null = null;
 
@@ -57,4 +58,21 @@ async function getAppToken() {
     return cachedToken.token;
 }
 
-console.log(await getAppToken());
+async function spotifyRequest<T>(path: string): Promise<T> {
+    const token = await getAppToken();
+    const response = await fetch(`${API_BASE}${path}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (response.status === 429) {
+        const retryAfter = Number(response.headers.get('Retry-After') ?? '1');
+        await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
+        return spotifyRequest<T>(path);
+    }
+
+    if (!response.ok) {
+        throw new Error(`Spotify API error: ${response.status}`);
+    }
+
+    return (await response.json()) as T;
+}
