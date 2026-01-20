@@ -16,7 +16,7 @@ export async function getAlbumIdsBySpotifyIds(spotifyIds: string[]) {
     return new Map(rows.map((row) => [row.spotifyId, row.albumId]));
 }
 
-export async function addAlbums(albums: Insertable<Albums>[]) {
+export async function insertAlbums(albums: Insertable<Albums>[]) {
     if (albums.length === 0) {
         return;
     }

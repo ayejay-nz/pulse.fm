@@ -18,7 +18,7 @@ export async function getTrackIdsFromSpotifyIds(spotifyIds: string[]) {
     );
 }
 
-export async function addTracks(tracks: Insertable<Tracks>[]) {
+export async function insertTracks(tracks: Insertable<Tracks>[]) {
     if (tracks.length === 0) {
         return;
     }

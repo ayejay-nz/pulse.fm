@@ -16,7 +16,7 @@ export async function getArtistIdsBySpotifyIds(spotifyIds: string[]) {
     return new Map(rows.map((row) => [row.spotifyId, row.artistId]));
 }
 
-export async function addArists(artists: Insertable<Artists>[]) {
+export async function insertArtists(artists: Insertable<Artists>[]) {
     if (artists.length === 0) {
         return;
     }
