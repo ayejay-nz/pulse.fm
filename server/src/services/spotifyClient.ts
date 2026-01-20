@@ -29,7 +29,7 @@ function isAuthData(data: unknown): data is AuthData {
 
 async function getAppToken() {
     if (cachedToken && cachedToken.expiresAt > Date.now()) {
-        return cachedToken;
+        return cachedToken.token;
     }
 
     const auth = Buffer.from(
