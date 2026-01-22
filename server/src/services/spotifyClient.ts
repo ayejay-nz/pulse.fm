@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { SpotifyAlbum, SpotifyArtist, SpotifyTrack } from '../types/spotifyApiTypes';
+import camelcaseKeys from 'camelcase-keys';
 
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 const API_BASE = 'https://api.spotify.com/v1';
@@ -75,7 +76,8 @@ async function spotifyRequest<T>(path: string): Promise<T> {
         throw new Error(`Spotify API error: ${response.status}`);
     }
 
-    return (await response.json()) as T;
+    const responseJson = (await response.json()) as Record<string, unknown>;
+    return camelcaseKeys(responseJson, { deep: true }) as T;
 }
 
 function chunk<T>(items: T[], size: number) {
