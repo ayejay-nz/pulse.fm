@@ -108,7 +108,6 @@ export interface ListeningHistory {
     historyId: Generated<Int8>;
     msPlayed: number;
     offline: Generated<boolean>;
-    offlineSyncedAt: Timestamp | null;
     trackId: number;
     userId: number;
 }
