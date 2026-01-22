@@ -109,10 +109,14 @@ export async function ingestTracksFromSpotify(trackUris: string[]): Promise<Trac
 
     await insertAlbums(mapAlbums(albums));
     await insertArtists(mapArtists(artists));
-    await insertTracks(mapTracks(tracks, existingAlbumsIds));
+
+    const albumIds = await getAlbumIdsBySpotifyIds(albumIdsToFetch);
+    await insertTracks(mapTracks(tracks, albumIds));
+
+    const trackIdsBySpotifyId = await getTrackIdsFromSpotifyIds(spotifyIds);
 
     return {
-        trackIdsBySpotifyId: existingTrackIds,
-        missingTrackIds,
+        trackIdsBySpotifyId,
+        missingTrackIds: missingTrackIds.filter((id) => !trackIdsBySpotifyId.has(id)),
     };
 }
