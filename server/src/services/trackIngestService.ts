@@ -6,10 +6,7 @@ import { SpotifyAlbum, SpotifyArtist, SpotifyTrack } from '../types/spotifyApiTy
 import { getAlbums, getArtists, getTracks } from './spotifyClient';
 import { Albums, Artists, Tracks, ReleaseDatePrecisionEnum } from '../db/types';
 import { TrackIngestResult } from '../types/trackIngestionTypes';
-
-function extractSpotifyTrackId(uri: string) {
-    return uri.split(':')[2] ?? null;
-}
+import { extractSpotifyTrackId } from '../utils/spotifyUtils';
 
 function toReleaseDate(releaseDate: string) {
     const parts = releaseDate.split('-');
