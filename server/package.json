@@ -8,7 +8,8 @@
         "build": "tsc",
         "dev": "tsx --watch src/index.ts",
         "codegen": "kysely-codegen --camel-case",
-        "migration:new": "bash ./scripts/create_migration.sh"
+        "migration:new": "bash ./scripts/create_migration.sh",
+        "migration:run": "bash ./scripts/run_migrations.sh"
     },
     "dependencies": {
         "@fastify/multipart": "^9.3.0",
