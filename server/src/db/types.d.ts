@@ -103,13 +103,27 @@ export interface Genres {
 }
 
 export interface ListeningHistory {
+    backfilled: Generated<boolean>;
     createdAt: Generated<Timestamp>;
     endedAt: Timestamp;
     historyId: Generated<Int8>;
+    incognito: Generated<boolean>;
     msPlayed: number;
     offline: Generated<boolean>;
+    skipped: Generated<boolean>;
     trackId: number;
     userId: number;
+}
+
+export interface ListeningHistoryRaw {
+    connCountry: string | null;
+    historyId: Int8;
+    offlineTimestamp: Int8 | null;
+    platform: string | null;
+    rawTs: Timestamp | null;
+    reasonEnd: string | null;
+    reasonStart: string | null;
+    shuffle: boolean | null;
 }
 
 export interface TrackArtists {
@@ -225,6 +239,7 @@ export interface DB {
     friendships: Friendships;
     genres: Genres;
     listeningHistory: ListeningHistory;
+    listeningHistoryRaw: ListeningHistoryRaw;
     trackArtists: TrackArtists;
     trackAudioFeatures: TrackAudioFeatures;
     tracks: Tracks;
