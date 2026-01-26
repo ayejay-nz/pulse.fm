@@ -1,0 +1,9 @@
+BEGIN;
+
+ALTER TABLE tracks ADD COLUMN isrc TEXT;
+
+ALTER TABLE albums 
+    ADD COLUMN ean TEXT,
+    ADD COLUMN upc TEXT;
+
+COMMIT;

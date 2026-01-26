@@ -60,6 +60,7 @@ export interface Albums {
     albumName: string;
     albumType: AlbumTypeEnum;
     createdAt: Generated<Timestamp>;
+    ean: string | null;
     externalUrl: string;
     imageUri: string | null;
     popularity: number;
@@ -68,6 +69,7 @@ export interface Albums {
     spotifyId: string;
     spotifyUri: string;
     totalTracks: number;
+    upc: string | null;
 }
 
 export interface ArtistGenres {
@@ -158,6 +160,7 @@ export interface Tracks {
     externalUrl: string | null;
     imageUri: string | null;
     isLocal: Generated<boolean>;
+    isrc: string | null;
     popularity: number;
     spotifyId: string | null;
     spotifyUri: string | null;
