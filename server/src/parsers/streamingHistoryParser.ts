@@ -12,6 +12,9 @@ type RawStreamingHistoryRecord = {
     ts: string;
     ms_played: number;
     spotify_track_uri: string;
+    offline: boolean;
+    skipped: boolean;
+    incognito_mode: boolean;
 };
 
 function isJsonEntry(entry: Entry) {
@@ -33,7 +36,10 @@ function isRawRecord(value: unknown): value is RawStreamingHistoryRecord {
     return (
         typeof record.ts === 'string' &&
         typeof record.ms_played === 'number' &&
-        typeof record.spotify_track_uri === 'string'
+        typeof record.spotify_track_uri === 'string' &&
+        typeof record.offline === 'boolean' &&
+        typeof record.skipped === 'boolean' &&
+        typeof record.incognito_mode === 'boolean'
     );
 }
 
@@ -42,6 +48,9 @@ function mapRawToRecord(raw: RawStreamingHistoryRecord): StreamingHistoryRecord 
         endTime: raw.ts,
         msPlayed: raw.ms_played,
         spotifyTrackUri: raw.spotify_track_uri,
+        offline: raw.offline,
+        skipped: raw.skipped,
+        incognito: raw.incognito_mode,
     };
 }
 

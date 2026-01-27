@@ -7,9 +7,13 @@ export type UploadSummary = {
 };
 
 export type StreamingHistoryRecord = {
+    backfilled?: boolean;
     endTime: string;
+    incognito: boolean;
     msPlayed: number;
+    skipped: boolean;
     spotifyTrackUri: string; // The rest of the track data can be gathered via the Spotify API
+    offline: boolean;
 };
 
 export class UploadError extends Error {
