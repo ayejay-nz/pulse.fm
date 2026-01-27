@@ -22,7 +22,8 @@ function mapAlbums(albums: SpotifyAlbum[]): Insertable<Albums>[] {
     return albums.map((album) => ({
         albumName: album.name,
         albumType: album.albumType,
-        externalUrl: album.externalUrls.spotify,
+        ean: album.externalIds.ean ?? null,
+        externalUrl: album.externalUrls.spotify ?? null,
         imageUri: album.images[0]?.url ?? null,
         popularity: album.popularity,
         releaseDate: toReleaseDate(album.releaseDate),
@@ -30,6 +31,7 @@ function mapAlbums(albums: SpotifyAlbum[]): Insertable<Albums>[] {
         spotifyId: album.id,
         spotifyUri: album.uri,
         totalTracks: album.totalTracks,
+        upc: album.externalIds.upc ?? null,
     }));
 }
 
@@ -59,6 +61,7 @@ function mapTracks(tracks: SpotifyTrack[], albumIds: Map<string, number>): Inser
                 externalUrl: track.externalUrls.spotify,
                 imageUri: track.album.images[0]?.url ?? null,
                 isLocal: track.isLocal,
+                isrc: track.externalIds.isrc ?? null,
                 popularity: track.popularity,
                 spotifyId: track.id,
                 spotifyUri: track.uri,
